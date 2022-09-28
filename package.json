@@ -1,0 +1,33 @@
+{
+  "name": "readme-tree",
+  "version": "1.0.0",
+  "private": true,
+  "description": "GitHub Action to write the output of \"tree\" command to each README in your project.",
+  "main": "dist/index.js",
+  "scripts": {
+    "build": "tsc",
+    "format": "prettier --write '**/*.{js,ts}'",
+    "format:check": "prettier --check '**/*.{js,ts}'",
+    "package": "ncc build src/main.ts --source-map --license licenses.txt"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/shirakiya/readme-tree.git"
+  },
+  "keywords": [
+    "actions",
+    "README",
+    "tree"
+  ],
+  "author": "shirakiya <shirakiya.pv@gmail.com> (https://github.com/shirakiya)",
+  "license": "MIT",
+  "homepage": "https://github.com/shirakiya/readme-tree#readme",
+  "bugs": {
+    "url": "https://github.com/shirakiya/readme-tree/issues"
+  },
+  "devDependencies": {
+    "@types/node": "^18.7.23",
+    "@vercel/ncc": "^0.34.0",
+    "typescript": "^4.8.4"
+  }
+}
