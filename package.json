@@ -8,6 +8,7 @@
     "build": "tsc",
     "format": "prettier --write '**/*.{js,ts}'",
     "format:check": "prettier --check '**/*.{js,ts}'",
+    "lint": "eslint src/**/*",
     "package": "ncc build src/main.ts --source-map --license licenses.txt"
   },
   "repository": {
@@ -27,7 +28,13 @@
   },
   "devDependencies": {
     "@types/node": "^18.7.23",
+    "@typescript-eslint/eslint-plugin": "^5.38.1",
+    "@typescript-eslint/parser": "^5.38.1",
     "@vercel/ncc": "^0.34.0",
+    "eslint": "^8.24.0",
+    "eslint-config-prettier": "^8.5.0",
+    "eslint-import-resolver-typescript": "^3.5.1",
+    "eslint-plugin-import": "^2.26.0",
     "prettier": "^2.7.1",
     "typescript": "^4.8.4"
   }
