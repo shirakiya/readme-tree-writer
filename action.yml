@@ -1,0 +1,11 @@
+name: README tree
+author: shirakiya
+description: GitHub Action to write the output of "tree" command to each README in your project.
+inputs:
+  config_path:
+    description: "The path of configuration file for this action (default: `.github/readmetreerc.yml`)"
+    required: false
+    default: .github/readmetreerc.yml
+runs:
+  using: node16
+  main: dist/index.js

@@ -13,3 +13,12 @@ jobs:
       - uses: ./.github/actions/setup-node
       - name: Run tests
         run: npm run test
+
+  action-test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: ./
+        id: itself
+        with:
+          config_path: .github/readmetreerc.yml

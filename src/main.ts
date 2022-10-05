@@ -1,12 +1,31 @@
+import * as path from "node:path"
+
 import * as core from "@actions/core"
+import * as exec from "@actions/exec"
 
 import { loadConfig } from "./config"
+import { searchDirs } from "./search"
 
 const run = async () => {
   const configPath = core.getInput("config_path")
   const config = await loadConfig(configPath)
 
-  console.log("config:", config)
+  for await (const dir of searchDirs(config)) {
+    let stdout = ""
+
+    const options: exec.ExecOptions = {
+      listeners: {
+        stdout: (data) => {
+          stdout += data.toString()
+        },
+      },
+      cwd: path.dirname(dir),
+    }
+
+    await exec.exec("tree", ["--noreport", "."], options)
+
+    console.log("stdout: ", stdout)
+  }
 }
 
 const main = async () => {

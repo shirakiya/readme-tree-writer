@@ -1,0 +1,8 @@
+file_names:
+  - README.md
+  - README_dev.md
+chapter: Custom Chapter
+include:
+  - testdata
+exclude:
+  - node_modules

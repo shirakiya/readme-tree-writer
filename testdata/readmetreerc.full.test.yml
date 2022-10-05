@@ -1,0 +1,10 @@
+fileNames:
+  - README1
+  - README2
+chapter: Test Chapter
+include:
+  - include_dir1
+  - include_dir2
+exclude:
+  - exclude_dir1
+  - exclude_dir2

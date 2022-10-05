@@ -1,32 +1,44 @@
-import { readFile } from "node:fs/promises"
+import { access, readFile } from "node:fs/promises"
 
 import { load } from "js-yaml"
-import { z, ZodError } from "zod"
+import { z } from "zod"
 
 const Config = z.object({
   fileNames: z.array(z.string()).default(["README.md"]),
   chapter: z.string().default("Tree"),
+  include: z.array(z.string()).default([]),
+  exclude: z.array(z.string()).default([]),
 })
 
 export type ConfigType = z.infer<typeof Config>
 
-export const loadConfig = async (path: string): Promise<ConfigType> => {
-  const content = await readFile(path, { encoding: "utf8" })
-  const c = load(content) as ConfigType
-
-  const err = validateConfig(c)
-  if (err) {
-    throw new Error(err.message)
+const isFileExist = async (path: string): Promise<boolean> => {
+  try {
+    await access(path)
+    return true
+  } catch {
+    return false
   }
-
-  return c
 }
 
-const validateConfig = (c: unknown): ZodError | void => {
-  const result = Config.safeParse(c)
-  if (result.success) {
-    return
+export const loadConfig = async (path: string): Promise<ConfigType> => {
+  let c: ConfigType
+  if (await isFileExist(path)) {
+    const content = await readFile(path, { encoding: "utf8" })
+    // If the config file is exist but empty, use default config.
+    if (content === "") {
+      c = Config.parse({})
+    } else {
+      c = load(content) as ConfigType
+    }
+  } else {
+    c = Config.parse({})
   }
 
-  return result.error
+  const result = Config.safeParse(c)
+  if (!result.success) {
+    throw new Error(result.error.message)
+  }
+
+  return result.data
 }
