@@ -10,7 +10,10 @@ const run = async () => {
   const configPath = core.getInput("config_path")
   const config = await loadConfig(configPath)
 
+  const executionDirs: string[] = []
   for await (const dir of searchDirs(config)) {
+    executionDirs.push(dir)
+
     let stdout = ""
 
     const options: exec.ExecOptions = {
@@ -26,6 +29,8 @@ const run = async () => {
 
     console.log("stdout: ", stdout)
   }
+
+  core.info(`Execution directories: \n${executionDirs.join("\n")}`)
 }
 
 const main = async () => {

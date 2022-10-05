@@ -13871,9 +13871,11 @@ const run = () => __awaiter(void 0, void 0, void 0, function* () {
     var e_1, _a;
     const configPath = core.getInput("config_path");
     const config = yield (0, config_1.loadConfig)(configPath);
+    const executionDirs = [];
     try {
         for (var _b = __asyncValues((0, search_1.searchDirs)(config)), _c; _c = yield _b.next(), !_c.done;) {
             const dir = _c.value;
+            executionDirs.push(dir);
             let stdout = "";
             const options = {
                 listeners: {
@@ -13894,6 +13896,7 @@ const run = () => __awaiter(void 0, void 0, void 0, function* () {
         }
         finally { if (e_1) throw e_1.error; }
     }
+    core.info(`Execution directories: \n${executionDirs.join("\n")}`);
 });
 const main = () => __awaiter(void 0, void 0, void 0, function* () {
     try {
