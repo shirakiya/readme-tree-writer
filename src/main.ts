@@ -4,15 +4,15 @@ import * as core from "@actions/core"
 import * as exec from "@actions/exec"
 
 import { loadConfig } from "./config"
-import { searchDirs } from "./search"
+import { searchPaths } from "./search"
 
 const run = async () => {
   const configPath = core.getInput("config_path")
   const config = await loadConfig(configPath)
 
-  const executionDirs: string[] = []
-  for await (const dir of searchDirs(config)) {
-    executionDirs.push(dir)
+  const executionPaths: string[] = []
+  for await (const p of searchPaths(config)) {
+    executionPaths.push(p)
 
     let stdout = ""
 
@@ -22,15 +22,16 @@ const run = async () => {
           stdout += data.toString()
         },
       },
-      cwd: path.dirname(dir),
+      cwd: path.dirname(p),
+      silent: true,
     }
 
     await exec.exec("tree", ["--noreport", "."], options)
 
-    console.log("stdout: ", stdout)
+    stdout
   }
 
-  core.info(`Execution directories: \n${executionDirs.join("\n")}`)
+  core.info(`Execution paths: \n${executionPaths.join("\n")}`)
 }
 
 const main = async () => {

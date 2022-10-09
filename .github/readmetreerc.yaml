@@ -5,5 +5,5 @@ chapter: Custom Chapter
 include:
   - testdata
 exclude:
-  - .
+  - "."
   - node_modules

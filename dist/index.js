@@ -13871,11 +13871,11 @@ const run = () => __awaiter(void 0, void 0, void 0, function* () {
     var e_1, _a;
     const configPath = core.getInput("config_path");
     const config = yield (0, config_1.loadConfig)(configPath);
-    const executionDirs = [];
+    const executionPaths = [];
     try {
-        for (var _b = __asyncValues((0, search_1.searchDirs)(config)), _c; _c = yield _b.next(), !_c.done;) {
-            const dir = _c.value;
-            executionDirs.push(dir);
+        for (var _b = __asyncValues((0, search_1.searchPaths)(config)), _c; _c = yield _b.next(), !_c.done;) {
+            const p = _c.value;
+            executionPaths.push(p);
             let stdout = "";
             const options = {
                 listeners: {
@@ -13883,10 +13883,11 @@ const run = () => __awaiter(void 0, void 0, void 0, function* () {
                         stdout += data.toString();
                     },
                 },
-                cwd: path.dirname(dir),
+                cwd: path.dirname(p),
+                silent: true,
             };
             yield exec.exec("tree", ["--noreport", "."], options);
-            console.log("stdout: ", stdout);
+            stdout;
         }
     }
     catch (e_1_1) { e_1 = { error: e_1_1 }; }
@@ -13896,7 +13897,7 @@ const run = () => __awaiter(void 0, void 0, void 0, function* () {
         }
         finally { if (e_1) throw e_1.error; }
     }
-    core.info(`Execution directories: \n${executionDirs.join("\n")}`);
+    core.info(`Execution paths: \n${executionPaths.join("\n")}`);
 });
 const main = () => __awaiter(void 0, void 0, void 0, function* () {
     try {
@@ -13945,15 +13946,6 @@ var __importStar = (this && this.__importStar) || function (mod) {
     __setModuleDefault(result, mod);
     return result;
 };
-var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
-    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
-    return new (P || (P = Promise))(function (resolve, reject) {
-        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
-        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
-        step((generator = generator.apply(thisArg, _arguments || [])).next());
-    });
-};
 var __await = (this && this.__await) || function (v) { return this instanceof __await ? (this.v = v, this) : new __await(v); }
 var __asyncValues = (this && this.__asyncValues) || function (o) {
     if (!Symbol.asyncIterator) throw new TypeError("Symbol.asyncIterator is not defined.");
@@ -13973,33 +13965,37 @@ var __asyncGenerator = (this && this.__asyncGenerator) || function (thisArg, _ar
     function reject(value) { resume("throw", value); }
     function settle(f, v) { if (f(v), q.shift(), q.length) resume(q[0][0], q[0][1]); }
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.searchDirs = void 0;
+exports.createGlobPatternsForTest = exports.searchPaths = void 0;
+const node_path_1 = __importDefault(__nccwpck_require__(9411));
 const glob = __importStar(__nccwpck_require__(8090));
-const createGlobber = (fileNames, include, exclude) => __awaiter(void 0, void 0, void 0, function* () {
+const createGlobPatterns = (fileNames, include, exclude) => {
     let includePatterns;
     if (include.length === 0) {
-        includePatterns = fileNames.map((fileName) => `**/${fileName}`);
+        includePatterns = fileNames.map((fileName) => node_path_1.default.join("**", fileName));
     }
     else {
         includePatterns = include
             .map((dir) => {
-            return fileNames.map((fileName) => `${dir}/**/${fileName}`);
+            return fileNames.map((fileName) => node_path_1.default.join(dir, "**", fileName));
         })
             .flat();
     }
     const excludePatterns = exclude
         .map((dir) => {
-        return fileNames.map((fileName) => `!${dir}/**/${fileName}`);
+        return fileNames.map((fileName) => node_path_1.default.join(`!${dir}`, "**", fileName));
     })
         .flat();
-    const patterns = includePatterns.concat(excludePatterns);
-    return yield glob.create(patterns.join("\n"));
-});
-function searchDirs(config) {
-    return __asyncGenerator(this, arguments, function* searchDirs_1() {
+    return includePatterns.concat(excludePatterns);
+};
+function searchPaths(config) {
+    return __asyncGenerator(this, arguments, function* searchPaths_1() {
         var e_1, _a;
-        const globber = yield __await(createGlobber(config.fileNames, config.include, config.exclude));
+        const globPatterns = createGlobPatterns(config.fileNames, config.include, config.exclude);
+        const globber = yield __await(glob.create(globPatterns.join("\n")));
         try {
             for (var _b = __asyncValues(globber.globGenerator()), _c; _c = yield __await(_b.next()), !_c.done;) {
                 const file = _c.value;
@@ -14015,7 +14011,11 @@ function searchDirs(config) {
         }
     });
 }
-exports.searchDirs = searchDirs;
+exports.searchPaths = searchPaths;
+// Export for testing.
+// I aim to make it easier to distinguish the function for
+// production code or test code.
+exports.createGlobPatternsForTest = createGlobPatterns;
 
 
 /***/ }),
