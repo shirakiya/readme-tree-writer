@@ -5,15 +5,17 @@ import * as exec from "@actions/exec"
 
 import { loadConfig } from "./config"
 import { searchPaths } from "./search"
+import { TreeWriter } from "./writer"
 
 const run = async () => {
   const configPath = core.getInput("config_path")
   const config = await loadConfig(configPath)
 
-  const executionPaths: string[] = []
-  for await (const p of searchPaths(config)) {
-    executionPaths.push(p)
+  const writer = new TreeWriter({
+    chapter: config.chapter,
+  })
 
+  for await (const p of searchPaths(config)) {
     let stdout = ""
 
     const options: exec.ExecOptions = {
@@ -25,13 +27,15 @@ const run = async () => {
       cwd: path.dirname(p),
       silent: true,
     }
-
     await exec.exec("tree", ["--noreport", "."], options)
 
-    stdout
-  }
+    await writer.write({
+      path: p,
+      tree: stdout,
+    })
 
-  core.info(`Execution paths: \n${executionPaths.join("\n")}`)
+    core.info(`Wrote tree to "${p}"`)
+  }
 }
 
 const main = async () => {

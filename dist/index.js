@@ -13867,15 +13867,17 @@ const core = __importStar(__nccwpck_require__(2186));
 const exec = __importStar(__nccwpck_require__(1514));
 const config_1 = __nccwpck_require__(6373);
 const search_1 = __nccwpck_require__(3930);
+const writer_1 = __nccwpck_require__(5323);
 const run = () => __awaiter(void 0, void 0, void 0, function* () {
     var e_1, _a;
     const configPath = core.getInput("config_path");
     const config = yield (0, config_1.loadConfig)(configPath);
-    const executionPaths = [];
+    const writer = new writer_1.TreeWriter({
+        chapter: config.chapter,
+    });
     try {
         for (var _b = __asyncValues((0, search_1.searchPaths)(config)), _c; _c = yield _b.next(), !_c.done;) {
             const p = _c.value;
-            executionPaths.push(p);
             let stdout = "";
             const options = {
                 listeners: {
@@ -13887,7 +13889,11 @@ const run = () => __awaiter(void 0, void 0, void 0, function* () {
                 silent: true,
             };
             yield exec.exec("tree", ["--noreport", "."], options);
-            stdout;
+            yield writer.write({
+                path: p,
+                tree: stdout,
+            });
+            core.info(`Wrote tree to "${p}"`);
         }
     }
     catch (e_1_1) { e_1 = { error: e_1_1 }; }
@@ -13897,7 +13903,6 @@ const run = () => __awaiter(void 0, void 0, void 0, function* () {
         }
         finally { if (e_1) throw e_1.error; }
     }
-    core.info(`Execution paths: \n${executionPaths.join("\n")}`);
 });
 const main = () => __awaiter(void 0, void 0, void 0, function* () {
     try {
@@ -13965,28 +13970,25 @@ var __asyncGenerator = (this && this.__asyncGenerator) || function (thisArg, _ar
     function reject(value) { resume("throw", value); }
     function settle(f, v) { if (f(v), q.shift(), q.length) resume(q[0][0], q[0][1]); }
 };
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.createGlobPatternsForTest = exports.searchPaths = void 0;
-const node_path_1 = __importDefault(__nccwpck_require__(9411));
+const path = __importStar(__nccwpck_require__(9411));
 const glob = __importStar(__nccwpck_require__(8090));
 const createGlobPatterns = (fileNames, include, exclude) => {
     let includePatterns;
     if (include.length === 0) {
-        includePatterns = fileNames.map((fileName) => node_path_1.default.join("**", fileName));
+        includePatterns = fileNames.map((fileName) => path.join("**", fileName));
     }
     else {
         includePatterns = include
             .map((dir) => {
-            return fileNames.map((fileName) => node_path_1.default.join(dir, "**", fileName));
+            return fileNames.map((fileName) => path.join(dir, "**", fileName));
         })
             .flat();
     }
     const excludePatterns = exclude
         .map((dir) => {
-        return fileNames.map((fileName) => node_path_1.default.join(`!${dir}`, "**", fileName));
+        return fileNames.map((fileName) => path.join(`!${dir}`, "**", fileName));
     })
         .flat();
     return includePatterns.concat(excludePatterns);
@@ -14016,6 +14018,79 @@ exports.searchPaths = searchPaths;
 // I aim to make it easier to distinguish the function for
 // production code or test code.
 exports.createGlobPatternsForTest = createGlobPatterns;
+
+
+/***/ }),
+
+/***/ 5323:
+/***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
+
+"use strict";
+
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+var __asyncValues = (this && this.__asyncValues) || function (o) {
+    if (!Symbol.asyncIterator) throw new TypeError("Symbol.asyncIterator is not defined.");
+    var m = o[Symbol.asyncIterator], i;
+    return m ? m.call(o) : (o = typeof __values === "function" ? __values(o) : o[Symbol.iterator](), i = {}, verb("next"), verb("throw"), verb("return"), i[Symbol.asyncIterator] = function () { return this; }, i);
+    function verb(n) { i[n] = o[n] && function (v) { return new Promise(function (resolve, reject) { v = o[n](v), settle(resolve, reject, v.done, v.value); }); }; }
+    function settle(resolve, reject, d, v) { Promise.resolve(v).then(function(v) { resolve({ value: v, done: d }); }, reject); }
+};
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.TreeWriter = void 0;
+const node_fs_1 = __nccwpck_require__(7561);
+const promises_1 = __nccwpck_require__(3977);
+const node_readline_1 = __nccwpck_require__(1747);
+class TreeWriter {
+    constructor(opt) {
+        this.opt = opt;
+    }
+    write(args) {
+        var e_1, _a;
+        return __awaiter(this, void 0, void 0, function* () {
+            const rs = (0, node_fs_1.createReadStream)(args.path);
+            const rl = (0, node_readline_1.createInterface)({ input: rs });
+            const newContent = [];
+            let isEmpty = true;
+            let inChapter = false;
+            try {
+                for (var rl_1 = __asyncValues(rl), rl_1_1; rl_1_1 = yield rl_1.next(), !rl_1_1.done;) {
+                    const line = rl_1_1.value;
+                    isEmpty = false;
+                    const trimedLine = line.trim();
+                    if (inChapter && trimedLine.startsWith("#")) {
+                        inChapter = false;
+                    }
+                    if (!inChapter) {
+                        newContent.push(line);
+                    }
+                    if (trimedLine.startsWith("#") && trimedLine.endsWith(this.opt.chapter)) {
+                        inChapter = true;
+                        // treeの内容を追加する
+                        newContent.push("", "```", ...args.tree.split("\n"), "```", "");
+                    }
+                }
+            }
+            catch (e_1_1) { e_1 = { error: e_1_1 }; }
+            finally {
+                try {
+                    if (rl_1_1 && !rl_1_1.done && (_a = rl_1.return)) yield _a.call(rl_1);
+                }
+                finally { if (e_1) throw e_1.error; }
+            }
+            const endOfFile = isEmpty ? "" : "\n";
+            yield (0, promises_1.writeFile)(args.path, newContent.join("\n") + endOfFile);
+        });
+    }
+}
+exports.TreeWriter = TreeWriter;
 
 
 /***/ }),
@@ -14084,6 +14159,14 @@ module.exports = require("net");
 
 /***/ }),
 
+/***/ 7561:
+/***/ ((module) => {
+
+"use strict";
+module.exports = require("node:fs");
+
+/***/ }),
+
 /***/ 3977:
 /***/ ((module) => {
 
@@ -14097,6 +14180,14 @@ module.exports = require("node:fs/promises");
 
 "use strict";
 module.exports = require("node:path");
+
+/***/ }),
+
+/***/ 1747:
+/***/ ((module) => {
+
+"use strict";
+module.exports = require("node:readline");
 
 /***/ }),
 
