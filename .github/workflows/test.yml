@@ -22,3 +22,7 @@ jobs:
         id: itself
         with:
           config_path: .github/readmetreerc.yml
+      - name: Display diff
+        run: |
+          git status
+          git diff
