@@ -119,9 +119,6 @@ bbb
 aaa
 
 # Tree
-foo
-bar
-baz
 `,
             tree: "tree",
           },
@@ -130,6 +127,23 @@ baz
 aaa
 
 # Tree
+
+\`\`\`
+tree
+\`\`\`
+
+`,
+          },
+        },
+        {
+          name: "replace the content of '##' chapter",
+          arrange: {
+            chapter: "Tree Tree",
+            content: "## Tree Tree\n",
+            tree: "tree",
+          },
+          want: {
+            content: `## Tree Tree
 
 \`\`\`
 tree

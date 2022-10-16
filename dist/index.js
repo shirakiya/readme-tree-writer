@@ -13872,6 +13872,7 @@ const run = () => __awaiter(void 0, void 0, void 0, function* () {
     var e_1, _a;
     const configPath = core.getInput("config_path");
     const config = yield (0, config_1.loadConfig)(configPath);
+    core.info(`Run with the following config\n${JSON.stringify(config)}\n`);
     const writer = new writer_1.TreeWriter({
         chapter: config.chapter,
     });

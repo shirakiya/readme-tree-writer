@@ -11,6 +11,8 @@ const run = async () => {
   const configPath = core.getInput("config_path")
   const config = await loadConfig(configPath)
 
+  core.info(`Run with the following config\n${JSON.stringify(config)}\n`)
+
   const writer = new TreeWriter({
     chapter: config.chapter,
   })
