@@ -28,7 +28,6 @@ export class TreeWriter {
       }
       if (trimedLine.startsWith("#") && trimedLine.endsWith(this.opt.chapter)) {
         inChapter = true
-        // treeの内容を追加する
         newContent.push("", "```", ...args.tree.split("\n"), "```", "")
       }
     }
