@@ -29,6 +29,7 @@ const createGlobPatterns = (
   return includePatterns.concat(excludePatterns)
 }
 
+// searchPaths generates file paths searched with the config parameters.
 export async function* searchPaths(config: ConfigType): AsyncGenerator<string> {
   const globPatterns = createGlobPatterns(
     config.fileNames,
