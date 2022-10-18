@@ -22,7 +22,11 @@ jobs:
         id: itself
         with:
           config_path: .github/readmetreerc.yml
-      - name: Display diff
+      - name: Check diff generated with this action itself
         run: |
-          git status
-          git diff
+          if [ "$(git diff --ignore-space-at-eol . | wc -l)" -gt "0" ]; then
+            echo "Detected diff.  See status below:"
+            git --no-pager diff HEAD .
+            git status
+            exit 1
+          fi
