@@ -13890,11 +13890,13 @@ const run = () => __awaiter(void 0, void 0, void 0, function* () {
                 silent: true,
             };
             yield exec.exec("tree", ["--noreport", "."], options);
-            yield writer.write({
+            const result = yield writer.write({
                 path: p,
                 tree: stdout,
             });
-            core.info(`Wrote tree to "${p}"`);
+            if (result) {
+                core.info(`Wrote tree to "${p}"`);
+            }
         }
     }
     catch (e_1_1) { e_1 = { error: e_1_1 }; }
@@ -14054,12 +14056,14 @@ class TreeWriter {
     constructor(opt) {
         this.opt = opt;
     }
+    // write returns boolean whether it finds the chapter and writes the tree or not.
     write(args) {
         var e_1, _a;
         return __awaiter(this, void 0, void 0, function* () {
             const rs = (0, node_fs_1.createReadStream)(args.path);
             const rl = (0, node_readline_1.createInterface)({ input: rs });
             const newContent = [];
+            let doWrite = false;
             let isEmpty = true;
             let inChapter = false;
             try {
@@ -14074,6 +14078,7 @@ class TreeWriter {
                         newContent.push(line);
                     }
                     if (trimedLine.startsWith("#") && trimedLine.endsWith(this.opt.chapter)) {
+                        doWrite = true;
                         inChapter = true;
                         newContent.push("", "```", ...args.tree.split("\n"), "```", "");
                     }
@@ -14088,6 +14093,7 @@ class TreeWriter {
             }
             const endOfFile = isEmpty ? "" : "\n";
             yield (0, promises_1.writeFile)(args.path, newContent.join("\n") + endOfFile);
+            return doWrite;
         });
     }
 }

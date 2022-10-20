@@ -31,12 +31,13 @@ const run = async () => {
     }
     await exec.exec("tree", ["--noreport", "."], options)
 
-    await writer.write({
+    const result = await writer.write({
       path: p,
       tree: stdout,
     })
-
-    core.info(`Wrote tree to "${p}"`)
+    if (result) {
+      core.info(`Wrote tree to "${p}"`)
+    }
   }
 }
 

@@ -9,12 +9,14 @@ interface options {
 export class TreeWriter {
   constructor(private opt: options) {}
 
-  async write(args: { path: string; tree: string }): Promise<void> {
+  // write returns boolean whether it finds the chapter and writes the tree or not.
+  async write(args: { path: string; tree: string }): Promise<boolean> {
     const rs = createReadStream(args.path)
     const rl = createInterface({ input: rs })
 
     const newContent: string[] = []
 
+    let doWrite = false
     let isEmpty = true
     let inChapter = false
     for await (const line of rl) {
@@ -27,6 +29,7 @@ export class TreeWriter {
         newContent.push(line)
       }
       if (trimedLine.startsWith("#") && trimedLine.endsWith(this.opt.chapter)) {
+        doWrite = true
         inChapter = true
         newContent.push("", "```", ...args.tree.split("\n"), "```", "")
       }
@@ -35,5 +38,7 @@ export class TreeWriter {
     const endOfFile = isEmpty ? "" : "\n"
 
     await writeFile(args.path, newContent.join("\n") + endOfFile)
+
+    return doWrite
   }
 }

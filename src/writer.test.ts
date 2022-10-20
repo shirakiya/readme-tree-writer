@@ -37,6 +37,7 @@ describe("TreeWriter", () => {
         }
         want: {
           content: string
+          return: boolean
         }
       }
 
@@ -77,6 +78,7 @@ testdata/testdir1
 # Other chapter
 bbb
 `,
+            return: true,
           },
         },
         {
@@ -109,6 +111,7 @@ tree
 # Other chapter
 bbb
 `,
+            return: true,
           },
         },
         {
@@ -133,6 +136,7 @@ tree
 \`\`\`
 
 `,
+            return: true,
           },
         },
         {
@@ -150,6 +154,7 @@ tree
 \`\`\`
 
 `,
+            return: true,
           },
         },
         {
@@ -161,6 +166,7 @@ tree
           },
           want: {
             content: "",
+            return: false,
           },
         },
       ]
@@ -174,12 +180,13 @@ tree
 
           const close = await createFile(path, t.arrange.content)
 
-          await writer.write({
+          const got = await writer.write({
             path,
             tree: t.arrange.tree,
           })
 
           expect((await readFile(path)).toString()).toBe(t.want.content)
+          expect(got).toBe(t.want.return)
 
           await close()
         })
