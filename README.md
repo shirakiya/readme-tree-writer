@@ -1,6 +1,8 @@
 # readme-tree-writer
 GitHub Action to write the output of "tree" command to each README in your project.
 
+Here is a [sample repository using this action](https://github.com/shirakiya/readme-tree-writer-sample).
+
 
 ## Usage
 Apply to `uses` in workflow config like below.
