@@ -13994,6 +13994,7 @@ const createGlobPatterns = (fileNames, include, exclude) => {
         .flat();
     return includePatterns.concat(excludePatterns);
 };
+// searchPaths generates file paths searched with the config parameters.
 function searchPaths(config) {
     return __asyncGenerator(this, arguments, function* searchPaths_1() {
         var e_1, _a;
@@ -14074,7 +14075,6 @@ class TreeWriter {
                     }
                     if (trimedLine.startsWith("#") && trimedLine.endsWith(this.opt.chapter)) {
                         inChapter = true;
-                        // treeの内容を追加する
                         newContent.push("", "```", ...args.tree.split("\n"), "```", "");
                     }
                 }
