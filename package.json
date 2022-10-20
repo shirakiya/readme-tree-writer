@@ -1,5 +1,5 @@
 {
-  "name": "readme-tree",
+  "name": "readme-tree-writer",
   "version": "1.0.0",
   "private": true,
   "description": "GitHub Action to write the output of \"tree\" command to each README in your project.",
@@ -14,7 +14,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/shirakiya/readme-tree.git"
+    "url": "git+https://github.com/shirakiya/readme-tree-writer.git"
   },
   "keywords": [
     "actions",
@@ -23,9 +23,9 @@
   ],
   "author": "shirakiya <shirakiya.pv@gmail.com> (https://github.com/shirakiya)",
   "license": "MIT",
-  "homepage": "https://github.com/shirakiya/readme-tree#readme",
+  "homepage": "https://github.com/shirakiya/readme-tree-writer#readme",
   "bugs": {
-    "url": "https://github.com/shirakiya/readme-tree/issues"
+    "url": "https://github.com/shirakiya/readme-tree-writer/issues"
   },
   "engines": {
     "node": "16.x"

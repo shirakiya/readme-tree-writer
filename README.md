@@ -1,4 +1,4 @@
-# readme-tree
+# readme-tree-writer
 GitHub Action to write the output of "tree" command to each README in your project.
 
 
@@ -6,7 +6,7 @@ GitHub Action to write the output of "tree" command to each README in your proje
 Apply to `uses` in workflow config like below.
 
 ```yaml
-- uses: shirakiya/readme-tree@v1
+- uses: shirakiya/readme-tree-writer@v1
 ```
 
 ### Example workflow
@@ -26,7 +26,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - name: Write tree outputs to README.md
-        uses: shirakiya/readme-tree@v1
+        uses: shirakiya/readme-tree-writer@v1
         with:
           config_path: .github/readmetreerc.yml
       - name: Check diff
