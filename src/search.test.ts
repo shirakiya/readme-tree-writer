@@ -17,6 +17,7 @@ describe("searchPaths", () => {
     }
 
     expect(actual).toEqual([
+      path.join(__dirname, "../testdata/testdir1/README.md"),
       path.join(__dirname, "../testdata/testdir1/dir2/README.dev.md"),
       path.join(__dirname, "../testdata/testdir2/README.md"),
     ])
