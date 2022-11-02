@@ -156,5 +156,39 @@ And writes the output to README file. You should pay attension to new lines.
 ````
 
 
+## Usecase
+
+Show example workflow settings for some usecase.
+
+
+### Add a commit if differences by this action apprear
+
+
+```yaml
+name: Add tree changes
+
+on: push
+
+jobs:
+  commit-tree-changes:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Write tree outputs to README.md
+        uses: shirakiya/readme-tree-writer@v1
+        with:
+          config_path: .github/readmetreerc.yml
+      - name: Commit if diff exists
+        run: |
+          if [ "$(git diff --ignore-space-at-eol . | wc -l)" -gt "0" ]; then
+            git config user.name github-actions
+            git config user.email github-actions@github.com
+            git add .
+            git commit -m "commit by shirakiya/readme-tree-writer"
+            git push
+          fi
+```
+
+
 ## License
 The scripts and documentation in this project are released under the [MIT License](LICENSE)
