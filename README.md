@@ -134,7 +134,7 @@ For example, when the directory structure is as follows, the following is writte
 This action uses following command and options in each directory to get tree output.
 
 ```
-tree --noreport .
+tree --noreport -v .
 ```
 
 And writes the output to README file. You should pay attension to new lines.
