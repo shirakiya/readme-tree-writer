@@ -13863,6 +13863,7 @@ var __asyncValues = (this && this.__asyncValues) || function (o) {
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 const path = __importStar(__nccwpck_require__(9411));
+__nccwpck_require__(9630);
 const core = __importStar(__nccwpck_require__(2186));
 const exec = __importStar(__nccwpck_require__(1514));
 const config_1 = __nccwpck_require__(6373);
@@ -13889,10 +13890,17 @@ const run = () => __awaiter(void 0, void 0, void 0, function* () {
                 cwd: path.dirname(p),
                 silent: true,
             };
-            yield exec.exec("tree", ["--noreport", "."], options);
+            yield exec.exec("tree", ["--noreport", "-v", "."], options);
+            // XXX: The raw output of `tree` includes "no-break-space" character.
+            // no-break-space appears only in GitHub Actions host as far as I know.
+            // I assume that developers write the output of tree command in local machine,
+            // and they run this action. If this action writes the output of tree command
+            // with no-break-space, there will always be a difference. To avoid this,
+            // replace no-break-space to normal space(\u{0020}).
+            const treeOutput = stdout.replace(/[\u00A0]/g, " ");
             const result = yield writer.write({
                 path: p,
-                tree: stdout,
+                tree: treeOutput,
             });
             if (result) {
                 core.info(`Wrote tree to "${p}"`);
@@ -14187,6 +14195,14 @@ module.exports = require("node:fs/promises");
 
 "use strict";
 module.exports = require("node:path");
+
+/***/ }),
+
+/***/ 9630:
+/***/ ((module) => {
+
+"use strict";
+module.exports = require("node:querystring");
 
 /***/ }),
 
