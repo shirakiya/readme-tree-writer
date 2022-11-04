@@ -1,0 +1,17 @@
+changelog:
+  exclude:
+    labels:
+      - chore
+  categories:
+    - title: New features
+      labels:
+        - enhancement
+    - title: Bug fixes
+      labels:
+        - bug
+    - title: Package updates
+      labels:
+        - renovate
+    - title: Others
+      labels:
+        - "*"
