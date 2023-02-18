@@ -13867,7 +13867,6 @@ var __asyncValues = (this && this.__asyncValues) || function (o) {
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 const path = __importStar(__nccwpck_require__(9411));
-__nccwpck_require__(9630);
 const core = __importStar(__nccwpck_require__(2186));
 const exec = __importStar(__nccwpck_require__(1514));
 const config_1 = __nccwpck_require__(6373);
@@ -14199,14 +14198,6 @@ module.exports = require("node:fs/promises");
 
 "use strict";
 module.exports = require("node:path");
-
-/***/ }),
-
-/***/ 9630:
-/***/ ((module) => {
-
-"use strict";
-module.exports = require("node:querystring");
 
 /***/ }),
 

@@ -1,5 +1,4 @@
 import * as path from "node:path"
-import { escape } from "node:querystring"
 
 import * as core from "@actions/core"
 import * as exec from "@actions/exec"
