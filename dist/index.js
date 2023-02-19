@@ -13870,6 +13870,7 @@ const path = __importStar(__nccwpck_require__(9411));
 const core = __importStar(__nccwpck_require__(2186));
 const exec = __importStar(__nccwpck_require__(1514));
 const config_1 = __nccwpck_require__(6373);
+const replace_1 = __nccwpck_require__(5287);
 const search_1 = __nccwpck_require__(3930);
 const writer_1 = __nccwpck_require__(5323);
 const run = () => __awaiter(void 0, void 0, void 0, function* () {
@@ -13894,16 +13895,10 @@ const run = () => __awaiter(void 0, void 0, void 0, function* () {
                 silent: true,
             };
             yield exec.exec("tree", ["--noreport", "-v", "."], options);
-            // XXX: The raw output of `tree` includes "no-break-space" character.
-            // no-break-space appears only in GitHub Actions host as far as I know.
-            // I assume that developers write the output of tree command in local machine,
-            // and they run this action. If this action writes the output of tree command
-            // with no-break-space, there will always be a difference. To avoid this,
-            // replace no-break-space to normal space(\u{0020}).
-            const treeOutput = stdout.replace(/[\u00A0]/g, " ");
+            const treeResult = (0, replace_1.replaceTreeOutput)(stdout);
             const result = yield writer.write({
                 path: p,
-                tree: treeOutput,
+                tree: treeResult,
             });
             if (result) {
                 core.info(`Wrote tree to "${p}"`);
@@ -13933,6 +13928,35 @@ const main = () => __awaiter(void 0, void 0, void 0, function* () {
     }
 });
 void main();
+
+
+/***/ }),
+
+/***/ 5287:
+/***/ ((__unused_webpack_module, exports) => {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.replaceTreeOutput = void 0;
+const removeNoBreakSpace = (str) => {
+    // XXX: The raw output of `tree` includes "no-break-space" character.
+    // no-break-space appears only in GitHub Actions host as far as I know.
+    // I assume that developers write the output of tree command in local machine,
+    // and they run this action. If this action writes the output of tree command
+    // with no-break-space, there will always be a difference. To avoid this,
+    // replace no-break-space to normal space(\u{0020}).
+    return str.replace(/[\u00A0]/g, " ");
+};
+const removeReplacementChar = (str) => {
+    // XXX: I don't know why, the replacement character (\u{FFFD}) appears
+    // in the output of tree. As workaround, remove the replacement characters.
+    return str.replace(/[\uFFFD]/g, "");
+};
+const replaceTreeOutput = (raw) => {
+    return removeReplacementChar(removeNoBreakSpace(raw));
+};
+exports.replaceTreeOutput = replaceTreeOutput;
 
 
 /***/ }),
