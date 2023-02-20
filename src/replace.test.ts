@@ -14,12 +14,12 @@ describe("replaceTreeOutput", () => {
     {
       name: "confirm replacement characters",
       given: "├��",
-      expected: "├",
+      expected: "├ ",
     },
     {
       name: "confirm to replace completely",
       given: "├\u00A0��",
-      expected: "├ ",
+      expected: "├  ",
     },
   ]
 

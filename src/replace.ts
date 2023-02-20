@@ -11,7 +11,7 @@ const removeNoBreakSpace = (str: string): string => {
 const removeReplacementChar = (str: string): string => {
   // XXX: I don't know why, the replacement character (\u{FFFD}) appears
   // in the output of tree. As workaround, remove the replacement characters.
-  return str.replace(/[\uFFFD]/g, "")
+  return str.replace(/[\uFFFD][\uFFFD]/g, " ")
 }
 
 export const replaceTreeOutput = (raw: string): string => {

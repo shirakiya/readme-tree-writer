@@ -13951,7 +13951,7 @@ const removeNoBreakSpace = (str) => {
 const removeReplacementChar = (str) => {
     // XXX: I don't know why, the replacement character (\u{FFFD}) appears
     // in the output of tree. As workaround, remove the replacement characters.
-    return str.replace(/[\uFFFD]/g, "");
+    return str.replace(/[\uFFFD][\uFFFD]/g, " ");
 };
 const replaceTreeOutput = (raw) => {
     return removeReplacementChar(removeNoBreakSpace(raw));
