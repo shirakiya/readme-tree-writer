@@ -13874,7 +13874,7 @@ const replace_1 = __nccwpck_require__(5287);
 const search_1 = __nccwpck_require__(3930);
 const writer_1 = __nccwpck_require__(5323);
 const run = () => __awaiter(void 0, void 0, void 0, function* () {
-    var e_1, _a;
+    var _a, e_1, _b, _c;
     const configPath = core.getInput("config_path");
     const config = yield (0, config_1.loadConfig)(configPath);
     core.info(`Run with the following config\n${JSON.stringify(config)}\n`);
@@ -13882,33 +13882,40 @@ const run = () => __awaiter(void 0, void 0, void 0, function* () {
         chapter: config.chapter,
     });
     try {
-        for (var _b = __asyncValues((0, search_1.searchPaths)(config)), _c; _c = yield _b.next(), !_c.done;) {
-            const p = _c.value;
-            let stdout = "";
-            const options = {
-                listeners: {
-                    stdout: (data) => {
-                        stdout += data.toString();
+        for (var _d = true, _e = __asyncValues((0, search_1.searchPaths)(config)), _f; _f = yield _e.next(), _a = _f.done, !_a;) {
+            _c = _f.value;
+            _d = false;
+            try {
+                const p = _c;
+                let stdout = "";
+                const options = {
+                    listeners: {
+                        stdout: (data) => {
+                            stdout += data.toString();
+                        },
                     },
-                },
-                cwd: path.dirname(p),
-                silent: true,
-            };
-            yield exec.exec("tree", ["--noreport", "-v", "."], options);
-            const treeResult = (0, replace_1.replaceTreeOutput)(stdout);
-            const result = yield writer.write({
-                path: p,
-                tree: treeResult,
-            });
-            if (result) {
-                core.info(`Wrote tree to "${p}"`);
+                    cwd: path.dirname(p),
+                    silent: true,
+                };
+                yield exec.exec("tree", ["--noreport", "-v", "."], options);
+                const treeResult = (0, replace_1.replaceTreeOutput)(stdout);
+                const result = yield writer.write({
+                    path: p,
+                    tree: treeResult,
+                });
+                if (result) {
+                    core.info(`Wrote tree to "${p}"`);
+                }
+            }
+            finally {
+                _d = true;
             }
         }
     }
     catch (e_1_1) { e_1 = { error: e_1_1 }; }
     finally {
         try {
-            if (_c && !_c.done && (_a = _b.return)) yield _a.call(_b);
+            if (!_d && !_a && (_b = _e.return)) yield _b.call(_e);
         }
         finally { if (e_1) throw e_1.error; }
     }
@@ -14034,19 +14041,26 @@ const createGlobPatterns = (fileNames, include, exclude) => {
 // searchPaths generates file paths searched with the config parameters.
 function searchPaths(config) {
     return __asyncGenerator(this, arguments, function* searchPaths_1() {
-        var e_1, _a;
+        var _a, e_1, _b, _c;
         const globPatterns = createGlobPatterns(config.fileNames, config.include, config.exclude);
         const globber = yield __await(glob.create(globPatterns.join("\n")));
         try {
-            for (var _b = __asyncValues(globber.globGenerator()), _c; _c = yield __await(_b.next()), !_c.done;) {
-                const file = _c.value;
-                yield yield __await(file);
+            for (var _d = true, _e = __asyncValues(globber.globGenerator()), _f; _f = yield __await(_e.next()), _a = _f.done, !_a;) {
+                _c = _f.value;
+                _d = false;
+                try {
+                    const file = _c;
+                    yield yield __await(file);
+                }
+                finally {
+                    _d = true;
+                }
             }
         }
         catch (e_1_1) { e_1 = { error: e_1_1 }; }
         finally {
             try {
-                if (_c && !_c.done && (_a = _b.return)) yield __await(_a.call(_b));
+                if (!_d && !_a && (_b = _e.return)) yield __await(_b.call(_e));
             }
             finally { if (e_1) throw e_1.error; }
         }
@@ -14093,7 +14107,7 @@ class TreeWriter {
     }
     // write returns boolean whether it finds the chapter and writes the tree or not.
     write(args) {
-        var e_1, _a;
+        var _a, e_1, _b, _c;
         return __awaiter(this, void 0, void 0, function* () {
             const rs = (0, node_fs_1.createReadStream)(args.path);
             const rl = (0, node_readline_1.createInterface)({ input: rs });
@@ -14102,27 +14116,34 @@ class TreeWriter {
             let isEmpty = true;
             let inChapter = false;
             try {
-                for (var rl_1 = __asyncValues(rl), rl_1_1; rl_1_1 = yield rl_1.next(), !rl_1_1.done;) {
-                    const line = rl_1_1.value;
-                    isEmpty = false;
-                    const trimedLine = line.trim();
-                    if (inChapter && trimedLine.startsWith("#")) {
-                        inChapter = false;
+                for (var _d = true, rl_1 = __asyncValues(rl), rl_1_1; rl_1_1 = yield rl_1.next(), _a = rl_1_1.done, !_a;) {
+                    _c = rl_1_1.value;
+                    _d = false;
+                    try {
+                        const line = _c;
+                        isEmpty = false;
+                        const trimedLine = line.trim();
+                        if (inChapter && trimedLine.startsWith("#")) {
+                            inChapter = false;
+                        }
+                        if (!inChapter) {
+                            newContent.push(line);
+                        }
+                        if (trimedLine.startsWith("#") && trimedLine.endsWith(this.opt.chapter)) {
+                            doWrite = true;
+                            inChapter = true;
+                            newContent.push("", "```", ...args.tree.split("\n"), "```", "");
+                        }
                     }
-                    if (!inChapter) {
-                        newContent.push(line);
-                    }
-                    if (trimedLine.startsWith("#") && trimedLine.endsWith(this.opt.chapter)) {
-                        doWrite = true;
-                        inChapter = true;
-                        newContent.push("", "```", ...args.tree.split("\n"), "```", "");
+                    finally {
+                        _d = true;
                     }
                 }
             }
             catch (e_1_1) { e_1 = { error: e_1_1 }; }
             finally {
                 try {
-                    if (rl_1_1 && !rl_1_1.done && (_a = rl_1.return)) yield _a.call(rl_1);
+                    if (!_d && !_a && (_b = rl_1.return)) yield _b.call(rl_1);
                 }
                 finally { if (e_1) throw e_1.error; }
             }
