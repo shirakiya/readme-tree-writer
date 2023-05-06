@@ -3,6 +3,8 @@
   "extends": ["config:base"],
   "automerge": false,
   "labels": ["renovate"],
+  "prHourlyLimit": 0,
+  "rangeStrategy": "pin",
   "schedule": ["after 3pm and before 7pm"],
   "timezone": "Asia/Tokyo"
 }
