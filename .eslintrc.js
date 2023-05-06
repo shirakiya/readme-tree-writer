@@ -39,6 +39,7 @@ module.exports = {
         "newlines-between": "always-and-inside-groups",
       },
     ],
+    "@typescript-eslint/consistent-type-imports": "error",
     // FIXME(shirakiya): Core modules of Node.js are determined as "any" type.
     // I don't know why, but I have no choice to diable these rules.
     "@typescript-eslint/no-unsafe-argument": "off",
