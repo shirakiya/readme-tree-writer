@@ -14543,33 +14543,28 @@ const run = () => __awaiter(void 0, void 0, void 0, function* () {
         chapter: config.chapter,
     });
     try {
-        for (var _d = true, _e = __asyncValues((0, search_1.searchPaths)(config)), _f; _f = yield _e.next(), _a = _f.done, !_a;) {
+        for (var _d = true, _e = __asyncValues((0, search_1.searchPaths)(config)), _f; _f = yield _e.next(), _a = _f.done, !_a; _d = true) {
             _c = _f.value;
             _d = false;
-            try {
-                const p = _c;
-                let stdout = "";
-                const options = {
-                    listeners: {
-                        stdout: (data) => {
-                            stdout += data.toString();
-                        },
+            const p = _c;
+            let stdout = "";
+            const options = {
+                listeners: {
+                    stdout: (data) => {
+                        stdout += data.toString();
                     },
-                    cwd: path.dirname(p),
-                    silent: true,
-                };
-                yield exec.exec("tree", ["--noreport", "-v", "."], options);
-                const treeResult = (0, replace_1.replaceTreeOutput)(stdout);
-                const result = yield writer.write({
-                    path: p,
-                    tree: treeResult,
-                });
-                if (result) {
-                    core.info(`Wrote tree to "${p}"`);
-                }
-            }
-            finally {
-                _d = true;
+                },
+                cwd: path.dirname(p),
+                silent: true,
+            };
+            yield exec.exec("tree", ["--noreport", "-v", "."], options);
+            const treeResult = (0, replace_1.replaceTreeOutput)(stdout);
+            const result = yield writer.write({
+                path: p,
+                tree: treeResult,
+            });
+            if (result) {
+                core.info(`Wrote tree to "${p}"`);
             }
         }
     }
@@ -14706,16 +14701,11 @@ function searchPaths(config) {
         const globPatterns = createGlobPatterns(config.fileNames, config.include, config.exclude);
         const globber = yield __await(glob.create(globPatterns.join("\n")));
         try {
-            for (var _d = true, _e = __asyncValues(globber.globGenerator()), _f; _f = yield __await(_e.next()), _a = _f.done, !_a;) {
+            for (var _d = true, _e = __asyncValues(globber.globGenerator()), _f; _f = yield __await(_e.next()), _a = _f.done, !_a; _d = true) {
                 _c = _f.value;
                 _d = false;
-                try {
-                    const file = _c;
-                    yield yield __await(file);
-                }
-                finally {
-                    _d = true;
-                }
+                const file = _c;
+                yield yield __await(file);
             }
         }
         catch (e_1_1) { e_1 = { error: e_1_1 }; }
@@ -14777,27 +14767,22 @@ class TreeWriter {
             let isEmpty = true;
             let inChapter = false;
             try {
-                for (var _d = true, rl_1 = __asyncValues(rl), rl_1_1; rl_1_1 = yield rl_1.next(), _a = rl_1_1.done, !_a;) {
+                for (var _d = true, rl_1 = __asyncValues(rl), rl_1_1; rl_1_1 = yield rl_1.next(), _a = rl_1_1.done, !_a; _d = true) {
                     _c = rl_1_1.value;
                     _d = false;
-                    try {
-                        const line = _c;
-                        isEmpty = false;
-                        const trimedLine = line.trim();
-                        if (inChapter && trimedLine.startsWith("#")) {
-                            inChapter = false;
-                        }
-                        if (!inChapter) {
-                            newContent.push(line);
-                        }
-                        if (trimedLine.startsWith("#") && trimedLine.endsWith(this.opt.chapter)) {
-                            doWrite = true;
-                            inChapter = true;
-                            newContent.push("", "```", ...args.tree.split("\n"), "```", "");
-                        }
+                    const line = _c;
+                    isEmpty = false;
+                    const trimedLine = line.trim();
+                    if (inChapter && trimedLine.startsWith("#")) {
+                        inChapter = false;
                     }
-                    finally {
-                        _d = true;
+                    if (!inChapter) {
+                        newContent.push(line);
+                    }
+                    if (trimedLine.startsWith("#") && trimedLine.endsWith(this.opt.chapter)) {
+                        doWrite = true;
+                        inChapter = true;
+                        newContent.push("", "```", ...args.tree.split("\n"), "```", "");
                     }
                 }
             }
