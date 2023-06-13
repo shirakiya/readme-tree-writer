@@ -1,17 +1,21 @@
 changelog:
   exclude:
     labels:
+      - renovate
+      - tagpr
+      - maintenance
       - chore
   categories:
+    - title: Breaking Changes 🛠
+      labels:
+        - major
     - title: New features
       labels:
         - enhancement
+        - minor
     - title: Bug fixes
       labels:
         - bug
-    - title: Package updates
-      labels:
-        - renovate
-    - title: Others
+    - title: Other Changes
       labels:
         - "*"
