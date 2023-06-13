@@ -1,6 +1,6 @@
 {
   "name": "readme-tree-writer",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "private": true,
   "description": "GitHub Action to write the output of \"tree\" command to each README in your project.",
   "main": "dist/index.js",
