@@ -1,5 +1,9 @@
 # Changelog
 
+## [v2.0.0](https://github.com/shirakiya/readme-tree-writer/compare/v1.0.4...v2.0.0) - 2023-11-08
+### Breaking Changes 🛠
+- update Node.js to v20 as runtime in action and development by @shirakiya in https://github.com/shirakiya/readme-tree-writer/pull/172
+
 ## [v1.0.4](https://github.com/shirakiya/readme-tree-writer/compare/v1.0.3...v1.0.4) - 2023-06-13
 ### Other Changes
 - update Renovate settings by @shirakiya in https://github.com/shirakiya/readme-tree-writer/pull/60
