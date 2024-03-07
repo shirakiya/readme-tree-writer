@@ -15011,8 +15011,8 @@ class TreeWriter {
     }
     // write returns boolean whether it finds the chapter and writes the tree or not.
     write(args) {
-        var _a, e_1, _b, _c;
         return __awaiter(this, void 0, void 0, function* () {
+            var _a, e_1, _b, _c;
             const rs = (0, node_fs_1.createReadStream)(args.path);
             const rl = (0, node_readline_1.createInterface)({ input: rs });
             const newContent = [];
