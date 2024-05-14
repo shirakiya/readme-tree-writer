@@ -1,5 +1,9 @@
 # Changelog
 
+## [v2.0.1](https://github.com/shirakiya/readme-tree-writer/compare/v2...v2.0.1) - 2024-05-14
+### Other Changes
+- use prefered parameters for actions/create-github-app-token by @shirakiya in https://github.com/shirakiya/readme-tree-writer/pull/289
+
 ## [v2.0.0](https://github.com/shirakiya/readme-tree-writer/compare/v1.0.4...v2.0.0) - 2023-11-08
 ### Breaking Changes 🛠
 - update Node.js to v20 as runtime in action and development by @shirakiya in https://github.com/shirakiya/readme-tree-writer/pull/172
