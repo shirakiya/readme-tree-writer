@@ -15122,7 +15122,8 @@ var __asyncGenerator = (this && this.__asyncGenerator) || function (thisArg, _ar
     function settle(f, v) { if (f(v), q.shift(), q.length) resume(q[0][0], q[0][1]); }
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.createGlobPatternsForTest = exports.searchPaths = void 0;
+exports.createGlobPatternsForTest = void 0;
+exports.searchPaths = searchPaths;
 const path = __importStar(__nccwpck_require__(9411));
 const glob = __importStar(__nccwpck_require__(8090));
 const createGlobPatterns = (fileNames, include, exclude) => {
@@ -15167,7 +15168,6 @@ function searchPaths(config) {
         }
     });
 }
-exports.searchPaths = searchPaths;
 // Export for testing.
 // I aim to make it easier to distinguish the function for
 // production code or test code.
