@@ -28,7 +28,7 @@
     "url": "https://github.com/shirakiya/readme-tree-writer/issues"
   },
   "engines": {
-    "node": "20.18.1"
+    "node": "22.11.0"
   },
   "dependencies": {
     "@actions/core": "1.11.1",
@@ -40,7 +40,7 @@
   "devDependencies": {
     "@types/jest": "29.5.14",
     "@types/js-yaml": "4.0.9",
-    "@types/node": "20.17.8",
+    "@types/node": "22.10.0",
     "@typescript-eslint/eslint-plugin": "8.16.0",
     "@typescript-eslint/parser": "8.16.0",
     "@vercel/ncc": "0.38.3",
