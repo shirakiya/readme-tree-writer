@@ -35,7 +35,7 @@
     "@actions/exec": "1.1.1",
     "@actions/glob": "0.5.0",
     "js-yaml": "4.1.0",
-    "zod": "3.23.8"
+    "zod": "3.24.0"
   },
   "devDependencies": {
     "@types/jest": "29.5.14",
