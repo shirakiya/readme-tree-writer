@@ -1,5 +1,7 @@
 # Changelog
 
+## [v2.0.4](https://github.com/shirakiya/readme-tree-writer/compare/v2.0.3...v2.0.4) - 2025-04-11
+
 ## [v2.0.3](https://github.com/shirakiya/readme-tree-writer/compare/v2.0.2...v2.0.3) - 2025-02-21
 
 ## [v2.0.2](https://github.com/shirakiya/readme-tree-writer/compare/v2.0.1...v2.0.2) - 2024-07-23
