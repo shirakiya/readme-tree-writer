@@ -8,7 +8,7 @@ Here is a [sample repository using this action](https://github.com/shirakiya/rea
 Apply to `uses` in workflow config like below.
 
 ```yaml
-- uses: shirakiya/readme-tree-writer@v1
+- uses: shirakiya/readme-tree-writer@v2
 ```
 
 ### Example workflow
@@ -26,9 +26,9 @@ jobs:
   sample-workflow:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: Write tree outputs to README.md
-        uses: shirakiya/readme-tree-writer@v1
+        uses: shirakiya/readme-tree-writer@v2
         with:
           config_path: .github/readmetreerc.yml
       - name: Check diff
@@ -173,9 +173,9 @@ jobs:
   commit-tree-changes:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: Write tree outputs to README.md
-        uses: shirakiya/readme-tree-writer@v1
+        uses: shirakiya/readme-tree-writer@v2
         with:
           config_path: .github/readmetreerc.yml
       - name: Commit if diff exists
