@@ -1,5 +1,9 @@
 # Changelog
 
+## [v2.0.5](https://github.com/shirakiya/readme-tree-writer/compare/v2.0.4...v2.0.5) - 2025-04-12
+### Other Changes
+- update README; update versions of actions by @shirakiya in https://github.com/shirakiya/readme-tree-writer/pull/481
+
 ## [v2.0.4](https://github.com/shirakiya/readme-tree-writer/compare/v2.0.3...v2.0.4) - 2025-04-11
 
 ## [v2.0.3](https://github.com/shirakiya/readme-tree-writer/compare/v2.0.2...v2.0.3) - 2025-02-21
