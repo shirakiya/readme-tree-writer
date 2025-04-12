@@ -1,4 +1,8 @@
 # readme-tree-writer
+
+> [!WARNING]
+> This repository has been archived as its maintenance has been handed over to the organization the author belongs to .
+
 GitHub Action to write the output of "tree" command to each README in your project.
 
 Here is a [sample repository using this action](https://github.com/shirakiya/readme-tree-writer-sample).
